@@ -1,0 +1,26 @@
+{
+	"name": "voz-stream-portal",
+	"profile": "oztam",
+	"regions": ["ap-southeast-2"],
+	"type": "static",
+	"static": {
+		"dir": "build"
+	},
+	"lambda": {
+		"memory": 256,
+		"runtime": "nodejs18.x",
+		"accelerate": true
+	},
+	"stages": {
+		"staging": {
+			"hooks": {
+				"build": ["npm install", "PUBLIC_API_ROOT=https://svozstreamapi.oztam.com.au npm run build"]
+			}
+		},
+		"production": {
+			"hooks": {
+				"build": ["npm install", "PUBLIC_API_ROOT=https://vozstreamapi.oztam.com.au npm run build"]
+			}
+		}
+	}
+}

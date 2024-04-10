@@ -1,0 +1,47 @@
+version: 2.1
+executors:
+  comware:
+    docker:
+      - image: comware/circleci-node18-up:1.7.1-pro
+
+jobs:
+  build:
+    parallelism: 1
+    shell: /bin/bash
+    environment:
+      TZ: '/usr/share/zoneinfo/Australia/Melbourne'
+    executor:
+      name: comware
+    steps:
+      - checkout
+      - run: |
+          source $BASH_ENV
+          echo "Running up deploy for stage: $UP_STAGE"
+          up deploy $UP_STAGE
+
+workflows:
+  deploy_stage:
+    jobs:
+      - build:
+          context: oztam-testing
+          filters:
+            branches:
+              only: main
+            tags:
+              ignore: /.*/
+          pre-steps:
+            - run: |
+                echo "export UP_STAGE=staging" >> $BASH_ENV
+
+  deploy_prod:
+    jobs:
+      - build:
+          context: oztam-testing
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /.*/
+          pre-steps:
+            - run: |
+                echo "export UP_STAGE=production" >> $BASH_ENV
