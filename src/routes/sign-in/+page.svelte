@@ -73,7 +73,7 @@
 						required
 						placeholder="Email address"
 						disabled={signingIn}
-						value="steven@steventan.com.au"
+						value=""
 					/>
 				</label>
 
@@ -87,7 +87,7 @@
 						required
 						placeholder="Password"
 						disabled={signingIn}
-						value="stan"
+						value=""
 					/>
 				</label>
 			</div>
